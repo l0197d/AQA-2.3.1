@@ -15,7 +15,7 @@ import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-class DeliveryTest {
+class CardDeliveryTest {
 
     @BeforeEach
     void setup() {
@@ -25,7 +25,7 @@ class DeliveryTest {
     @Test
     @DisplayName("Should successful plan and replan meeting")
     void ShouldSuccessfulPlanAndReplanMeeting() {
-         Configuration.holdBrowserOpen = true;
+        Configuration.holdBrowserOpen = true;
         val validUser = DataGenerator.Registration.generateUser();
         val daysToAddForFirstMeeting = 4;
         val firstMeetingDate = DataGenerator.generateDate(daysToAddForFirstMeeting);
@@ -38,16 +38,6 @@ class DeliveryTest {
         $("[name='phone']").setValue(validUser.getPhone());
         $(".checkbox__box").click();
         $(".button__text").click();
-
-        if ($(withText("Доставка в выбранный город недоступна")).isDisplayed()) {
-            int i = validUser.getCity().length() - 2;
-            while (i > 0) {
-                $("[data-test-id=city] .input__control").sendKeys(Keys.BACK_SPACE);
-                i--;
-            }
-            $(".menu-item__control").click();
-            $(".button__text").click();
-        }
         $("[data-test-id=success-notification]>.notification__content").shouldHave(Condition.exactText("Встреча успешно запланирована на " + firstMeetingDate));
         $("[data-test-id=date] .input__control").sendKeys(Keys.chord(Keys.SHIFT, Keys.UP), Keys.DELETE);
         $("[data-test-id=date] .input__control").setValue(secondMeetingDate);

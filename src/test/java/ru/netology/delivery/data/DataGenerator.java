@@ -2,12 +2,12 @@ package ru.netology.delivery.data;
 
 import com.github.javafaker.Faker;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Value;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Random;
 
 public class DataGenerator {
     private DataGenerator() {}
@@ -21,28 +21,30 @@ public class DataGenerator {
         return currentDate.plusDays(numberDays).format(dateFormat);
     }
     public static String generateCity(){
-        return faker.address().city();
+        String[] cities = {"Москва", "Кемерово", "Смоленск", "Тамбов", "Пенза", "Липецк", "Петрозаводск", "Астрахань", "Саратов", "Санкт-Петербург"};
+        return cities[new Random().nextInt(cities.length)];
+
     }
+
     public static String generateName () {
         return faker.name().lastName().replace("ё", "е") + " " + faker.name().firstName().replace("ё", "е");
     }
-public static String generatePhone () {
+    public static String generatePhone () {
         return faker.phoneNumber().phoneNumber();
-}
-public  static class Registration {
+    }
+    public  static class Registration {
         private Registration() {
-                   }
-                   public static UserInfo generateUser() {
-            UserInfo user = new UserInfo(generateCity(),generateName(),generatePhone());
-            return user;
-                   }
-}
-@AllArgsConstructor
+        }
+        public static UserInfo generateUser() {
+            return new UserInfo(generateCity(),generateName(),generatePhone());
+        }
+    }
+    @AllArgsConstructor
     @Value
     public static class UserInfo {
         String city;
         String name;
         String phone;
-}
+    }
 
 }
